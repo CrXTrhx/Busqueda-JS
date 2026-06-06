@@ -1,15 +1,42 @@
+
+
+//Todas las marcas dependiedno de los filtros
 const resultado = document.querySelector('#resultado');
 
-document.addEventListener('DOMContentLoaded', () => {
 
-    mostrarAutos();
+//Variables de los selects
+const year = document.querySelector('#year');
+const minimo = document.querySelector('#minimo');
+const maximo = document.querySelector('#maximo');
+const puertas = document.querySelector('#puertas');
+const transmision = document.querySelector('#transmision');
+const color = document.querySelector('#color');
+const marca = document.querySelector('#marca');
 
-})
 
+//MAXIMO Y MINIMO de años de venta de la agencia
+const maxyear = new Date().getFullYear();
+const min = maxyear - 10;
+
+
+//Objeto de la busqueda
+const datoBusqueda = {
+    marca: '',
+    year: '',
+    minimo: '',
+    maximo: '',
+    puertas: '',
+    transmision: '',
+    color: '',
+
+}
+
+
+//funcion que llena la seccion de resultados
 const mostrarAutos = () => {
 
     autos.forEach(auto => {
-        const { marca, modelo, year, puertas, transmision, precio, color} = auto;
+        const { marca, modelo, year, puertas, transmision, precio, color } = auto;
         const autoHTML = document.createElement('p');
         autoHTML.textContent = ` ${marca} / ${modelo} / ${year} / ${puertas} / ${transmision} / ${precio} / ${color}`;
 
@@ -19,3 +46,80 @@ const mostrarAutos = () => {
     });
 
 }
+
+
+
+//llena el select de manera dinamica para 
+const llenarSelect = () => {
+
+    for (let i = maxyear; i >= min; i--) {
+        const año = document.createElement('OPTION');
+        año.value = i;
+        año.textContent = i;
+        year.appendChild(año);
+    }
+
+}
+
+const filtrarMarca = (auto) => {
+    const {marca} = datoBusqueda;
+    if (marca) {
+        return auto.marca === marca;
+    }
+    return auto;
+}
+
+
+//llenar bsuqueda
+const busqueda = () => {
+    const resultado = autos.filter(filtrarMarca);
+    console.log(resultado)
+}
+
+
+
+
+//Llamada de funciones cuando acaba de cargar el documento
+document.addEventListener('DOMContentLoaded', () => {
+
+    mostrarAutos();
+
+    llenarSelect();
+
+})
+
+
+marca.addEventListener('change', (e) => {
+    datoBusqueda.marca = e.target.value;
+    busqueda();
+})
+
+year.addEventListener('change', (e) => {
+    datoBusqueda.year = e.target.value;
+    busqueda();
+})
+
+maximo.addEventListener('change', (e) => {
+    datoBusqueda.maximo = e.target.value;
+    busqueda();
+})
+
+minimo.addEventListener('change', (e) => {
+    datoBusqueda.minimo = e.target.value;
+    busqueda();
+})
+
+puertas.addEventListener('change', (e) => {
+    datoBusqueda.puertas = e.target.value;
+    busqueda();
+})
+
+transmision.addEventListener('change', (e) => {
+    datoBusqueda.transmision = e.target.value;
+    busqueda();
+})
+
+color.addEventListener('change', (e) => {
+    datoBusqueda.color = e.target.value;
+    busqueda();
+})
