@@ -38,15 +38,30 @@ const mostrarAutos = (autos) => {
     limpiarHtml();
     autos.forEach(auto => {
         const { marca, modelo, year, puertas, transmision, precio, color } = auto;
-        const autoHTML = document.createElement('p');
-        autoHTML.textContent = ` ${marca} / ${modelo} / ${year} / ${puertas} / ${transmision} / ${precio} / ${color}`;
+        
+        const card = document.createElement('div');
+        card.classList.add('auto-card');
+        
+        card.innerHTML = `
+            <h3 class="auto-card-title">${marca} ${modelo}</h3>
+            <p class="auto-card-subtitle">${year}</p>
+            <div class="auto-info">
+                <span class="auto-info-label">Puertas:</span>
+                <span class="auto-info-value">${puertas}</span>
+            </div>
+            <div class="auto-info">
+                <span class="auto-info-label">Transmisión:</span>
+                <span class="auto-info-value">${transmision === 'automatico' ? 'Automática' : 'Manual'}</span>
+            </div>
+            <div class="auto-info">
+                <span class="auto-info-label">Color:</span>
+                <span class="auto-info-value">${color}</span>
+            </div>
+            <div class="auto-price">$${parseInt(precio).toLocaleString()}</div>
+        `;
 
-
-        resultado.appendChild(autoHTML);
-
+        resultado.appendChild(card);
     });
-
-
 }
 
 function limpiarHtml() {
@@ -124,9 +139,9 @@ const filtrarColor = (auto) => {
 
 function mensajeNoResultados() {
     limpiarHtml();
-    noResult = document.createElement('P');
+    noResult = document.createElement('div');
     noResult.classList.add('alert', 'error');
-    noResult.textContent = "No tenemos carros con esas especificaciones disponibles";
+    noResult.textContent = "No encontramos autos con esas especificaciones";
     resultado.appendChild(noResult);
 }
 //llenar bsuqueda
